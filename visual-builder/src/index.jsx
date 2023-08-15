@@ -20,7 +20,6 @@ const {
   ModuleContainer,
 
   // Renderer - Styles
-  ElementStyle,
   StyleContainer,
 
   // Renderer - Classnames
