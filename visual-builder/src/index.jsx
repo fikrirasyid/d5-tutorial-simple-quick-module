@@ -87,8 +87,8 @@ const ModuleStyles = ({
 
     {/* Element: Content */}
     <ElementStyle
-      selector={`${orderClass} .d5_tut_simple_quick_module_content`}
       attrs={attrs?.content?.decoration ?? {}}
+      selector={`${orderClass} .d5_tut_simple_quick_module_content`}
     />
   </StyleContainer>
 );
