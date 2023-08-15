@@ -129,7 +129,7 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 	 */
 	public static function render_callback( $attrs, $content, $block, $elements ) {
 		// Title.
-		$header = $elements->render(
+		$title = $elements->render(
 			[
 				'attrName' => 'title',
 			]
@@ -142,16 +142,34 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 			]
 		);
 
-		$description = HTMLUtility::render(
+		// Module Inner.
+		// Essentially, this is the module content.
+		// Were wrapping the title and content in a div with class `et_pb_module_inner`.
+		$module_inner = HTMLUtility::render(
 			[
 				'tag'               => 'div',
 				'attributes'        => [
 					'class' => 'et_pb_module_inner',
 				],
 				'childrenSanitizer' => 'et_core_esc_previously',
-				'children'          => $header . $content,
+				'children'          => $title . $content,
 			]
 		);
+
+		// This are the module elements that will be rendered in the frontend.
+		$module_elements = ElementComponents::component(
+			[
+				'attrs'         => $attrs['module']['decoration'] ?? [],
+				'id'            => $block->parsed_block['id'],
+
+				// FE only.
+				'orderIndex'    => $block->parsed_block['orderIndex'],
+				'storeInstance' => $block->parsed_block['storeInstance'],
+			]
+		);
+
+		// This are the children of the module container, which are the module elements and the module inner.
+		$module_container_children = $module_elements . $module_inner;
 
 		$parent = BlockParserStore::get_parent( $block->parsed_block['id'], $block->parsed_block['storeInstance'] );
 
@@ -173,16 +191,7 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 				'parentAttrs'         => $parent->attrs ?? [],
 				'parentId'            => $parent->id ?? '',
 				'parentName'          => $parent->blockName ?? '',
-				'children'            => ElementComponents::component(
-					[
-						'attrs'         => $attrs['module']['decoration'] ?? [],
-						'id'            => $block->parsed_block['id'],
-
-						// FE only.
-						'orderIndex'    => $block->parsed_block['orderIndex'],
-						'storeInstance' => $block->parsed_block['storeInstance'],
-					]
-				) . $description,
+				'children'            => $module_container_children,
 			]
 		);
 	}
