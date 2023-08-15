@@ -16,7 +16,6 @@ use ET\Builder\Packages\Module\Module;
 use ET\Builder\Packages\Module\Options\Element\ElementClassnames;
 use ET\Builder\Packages\Module\Options\Element\ElementComponents;
 use ET\Builder\Packages\Module\Options\Element\ElementScriptData;
-use ET\Builder\Packages\Module\Options\Element\ElementStyle;
 use ET\Builder\Packages\ModuleLibrary\ModuleRegistration;
 
 /**
