@@ -63,6 +63,7 @@ import metadata from './module.json';
  */
 const ModuleStyles = ({
   attrs,
+  elements,
   settings,
   orderClass,
   mode,
@@ -71,25 +72,24 @@ const ModuleStyles = ({
 }) => (
   <StyleContainer mode={mode} state={state} noStyleTag={noStyleTag}>
     {/* Element: Module */}
-    <ElementStyle
-      attrs={attrs?.module?.decoration ?? {}}
-      selector={orderClass}
-      disabledOn={{
-        disabledModuleVisibility: settings?.disabledModuleVisibility
-      }}
-    />
+    {elements.style({
+      attrName: 'module',
+      styleProps: {
+        disabledOn: {
+          disabledModuleVisibility: settings?.disabledModuleVisibility
+        }
+      }
+    })}
 
     {/* Element: Title */}
-    <ElementStyle
-      attrs={attrs?.title?.decoration ?? {}}
-      selector={`${orderClass} .d5_tut_simple_quick_module_title`}
-    />
+    {elements.style({
+      attrName: 'title',
+    })}
 
     {/* Element: Content */}
-    <ElementStyle
-      attrs={attrs?.content?.decoration ?? {}}
-      selector={`${orderClass} .d5_tut_simple_quick_module_content`}
-    />
+    {elements.style({
+      attrName: 'content',
+    })}
   </StyleContainer>
 );
 
@@ -142,6 +142,7 @@ const simpleQuickModule = {
     }) => (
       <ModuleContainer
         attrs={attrs}
+        elements={elements}
         id={id}
         moduleClassName="d5_tut_simple_quick_module"
         name={name}

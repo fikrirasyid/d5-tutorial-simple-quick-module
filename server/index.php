@@ -49,7 +49,8 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 	 * Render module style.
 	 */
 	public static function module_styles( $args ) {
-		$attrs = $args['attrs'] ?? [];
+		$attrs    = $args['attrs'] ?? [];
+		$elements = $args['elements'];
 
 		Style::add(
 			[
@@ -59,27 +60,26 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 				'storeInstance' => $args['storeInstance'],
 				'styles'        => [
 					// Module.
-					ElementStyle::style(
+					$elements->style(
 						[
-							'selector'   => $args['orderClass'],
-							'attrs'      => $attrs['module']['decoration'] ?? [],
-							'disabledOn' => [
-								'disabledModuleVisibility' => $args['settings']['disabledModuleVisibility'] ?? null,
+							'attrName'   => 'module',
+							'styleProps' => [
+								'disabledOn' => [
+									'disabledModuleVisibility' => $args['settings']['disabledModuleVisibility'] ?? null,
+								],
 							],
 						]
 					),
 					// Title.
-					ElementStyle::style(
+					$elements->style(
 						[
-							'attrs'    => $attrs['title']['decoration'] ?? [],
-							'selector' => "{$args['orderClass']} .d5_tut_simple_quick_module_title",
+							'attrName' => 'title',
 						]
 					),
 					// Content.
-					ElementStyle::style(
+					$elements->style(
 						[
-							'selector' => "{$args['orderClass']} .d5_tut_simple_quick_module_content",
-							'attrs'    => $attrs['content']['decoration'] ?? [],
+							'attrName' => 'content',
 						]
 					),
 				],
@@ -179,6 +179,7 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 
 				// VB equivalent.
 				'attrs'               => $attrs,
+				'elements'            => $elements,
 				'id'                  => $block->parsed_block['id'],
 				'moduleClassName'     => 'd5_tut_simple_quick_module',
 				'name'                => $block->block_type->name,
