@@ -27,20 +27,22 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 	 * `DependencyInterface` interface ensures class method name `load()` is executed for initialization.
 	 */
 	public function load() {
+		// Register module.
+		add_action( 'init', [ D5TutorialSimpleQuickModule::class, 'register_module' ] );
+	}
+
+	/**
+	 * Register module.
+	 */
+	public static function register_module() {
 		// Path to module metadata that is shared between Frontend and Visual Builder.
 		$module_json_folder_path = dirname( __DIR__, 1 ) . '/visual-builder/src';
 
-		// Register module.
-		add_action(
-			'init',
-			function() use ( $module_json_folder_path ) {
-				ModuleRegistration::register_module(
-					$module_json_folder_path,
-					[
-						'render_callback' => [ D5TutorialSimpleQuickModule::class, 'render_callback' ],
-					]
-				);
-			}
+		ModuleRegistration::register_module(
+			$module_json_folder_path,
+			[
+				'render_callback' => [ D5TutorialSimpleQuickModule::class, 'render_callback' ],
+			]
 		);
 	}
 
