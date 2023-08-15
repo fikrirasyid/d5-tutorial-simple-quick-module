@@ -171,8 +171,6 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 		// This are the children of the module container, which are the module elements and the module inner.
 		$module_container_children = $module_elements . $module_inner;
 
-		$parent = BlockParserStore::get_parent( $block->parsed_block['id'], $block->parsed_block['storeInstance'] );
-
 		return Module::render(
 			[
 				// FE only.
@@ -188,9 +186,6 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 				'moduleCategory'      => $block->block_type->category,
 				'stylesComponent'     => [ D5TutorialSimpleQuickModule::class, 'module_styles' ],
 				'scriptDataComponent' => [ D5TutorialSimpleQuickModule::class, 'module_script_data' ],
-				'parentAttrs'         => $parent->attrs ?? [],
-				'parentId'            => $parent->id ?? '',
-				'parentName'          => $parent->blockName ?? '',
 				'children'            => $module_container_children,
 			]
 		);
