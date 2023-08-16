@@ -20,6 +20,7 @@ define( 'D5_TUTORIAL_SIMPLE_QUICK_MODULE_URL', plugin_dir_url( __FILE__ ) );
 
 // Load Divi 5 modules.
 require_once D5_TUTORIAL_SIMPLE_QUICK_MODULE_PATH . 'server/index.php';
+require_once D5_TUTORIAL_SIMPLE_QUICK_MODULE_PATH . 'server/REST.php';
 
 /**
  * Enqueue Divi 5 Visual Builder Assets

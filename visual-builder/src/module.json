@@ -39,6 +39,19 @@
       "inlineEditor": "richText",
       "childrenSanitizer": "et_core_esc_previously",
       "allowHtml": true
+    },
+    "recentPosts": {
+      "type": "object",
+      "selector": "{{selector}} .d5-tut-simple-quick-module-recent-posts",
+      "default": {
+        "innerContent": {
+          "desktop": {
+            "value": {
+              "postsNumber": "3"
+            }
+          }
+        }
+      }
     }
   }
 }

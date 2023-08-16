@@ -142,6 +142,22 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 			]
 		);
 
+		// Render list of recent posts and its div wrapper.
+		$recent_posts = HTMLUtility::render(
+			[
+				'tag'               => 'div',
+				'attributes'        => [
+					'class' => 'd5-tut-simple-quick-module-recent-posts',
+				],
+				'childrenSanitizer' => 'et_core_esc_previously',
+				'children'          => self::render_recent_post(
+					[
+						'postsNumber' => $attrs['recentPosts']['innerContent']['desktop']['value']['postsNumber'],
+					]
+				),
+			]
+		);
+
 		// Module Inner.
 		// Essentially, this is the module content.
 		// Were wrapping the title and content in a div with class `et_pb_module_inner`.
@@ -152,7 +168,9 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 					'class' => 'et_pb_module_inner',
 				],
 				'childrenSanitizer' => 'et_core_esc_previously',
-				'children'          => $title . $content,
+
+				// Include list of recent posts along with title and content.
+				'children'          => $title . $content . $recent_posts,
 			]
 		);
 
@@ -192,6 +210,28 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 		);
 	}
 
+	/**
+	 * Return unordered list of recent posts.
+	 */
+	public static function render_recent_post( $args ) {
+		$recent_posts = \wp_get_recent_posts(
+			[
+				'numberposts' => intval( $args['postsNumber'] ?? 5 ),
+			]
+		);
+
+		ob_start();
+
+		echo '<ul>';
+
+		foreach ( $recent_posts as $post ) {
+			echo '<li><a href="'. esc_url( $post['guid'] ) .'">' . esc_html( $post['post_title'] ) . '</li></li>';
+		}
+
+		echo '</ul>';
+
+		return ob_get_clean();
+	}
 }
 
 // Register module.

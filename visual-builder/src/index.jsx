@@ -1,5 +1,7 @@
 // External library dependencies.
-import React from 'react';
+import React, {
+  useEffect,
+} from 'react';
 
 // WordPress package dependencies.
 const {
@@ -10,6 +12,7 @@ const {
 const {
   RichTextContainer,
   TextContainer,
+  RangeContainer,
 } = window?.divi?.fieldLibrary;
 const {
   GroupContainer
@@ -53,6 +56,9 @@ const {
 const {
   registerModule
 } = window?.divi?.moduleLibrary;
+const {
+  useFetch,
+} = window?.divi?.rest;
 
 // Module metadata that is used in both Frontend and Visual Builder.
 import metadata from './module.json';
@@ -138,31 +144,70 @@ const simpleQuickModule = {
       id,
       name,
       elements,
-    }) => (
-      <ModuleContainer
-        attrs={attrs}
-        elements={elements}
-        id={id}
-        moduleClassName="d5_tut_simple_quick_module"
-        name={name}
-        scriptDataComponent={ModuleScriptData}
-        stylesComponent={ModuleStyles}
-        classnamesFunction={moduleClassnames}
-      >
-        <ElementComponents
-          attrs={attrs?.module?.decoration}
+    }) => {
+      // Divi's hook for fetching value from REST API, and handling loading state.
+      const {
+        fetch,
+        response,
+        isLoading,
+      } = useFetch({
+        html: '',
+      });
+
+      // Attribute for handling number of posts to be displayed.
+      // If you have question on why it has to be in nested object, we'll explain this on the later tutorial.
+      const postsNumber = attrs?.recentPosts?.innerContent?.desktop?.value?.postsNumber;
+
+      // React hook that will execute the callback (in this case, fetching value from REST API endpoint)
+      // whenever the `postsNumber` value is changed.
+      useEffect(() => {
+        // Fetch value from this REST API endpoint. The returned value will be available
+        // on `response` properties of `useFetch` hook declaration above.
+        fetch({
+          method: 'GET',
+          restRoute: '/d5tut/v1/module-data/simple-quick-module/posts',
+          data: {
+            postsNumber: postsNumber,
+          },
+        }).catch(error => {
+          console.log(error);
+        })
+
+      // This will make sure that the callback is only executed when the `postsNumber` value is changed.
+      }, [postsNumber]);
+
+      return (
+        <ModuleContainer
+          attrs={attrs}
+          elements={elements}
           id={id}
-        />
-        <div className="et_pb_module_inner">
-          {elements.render({
-            attrName: 'title',
-          })}
-          {elements.render({
-            attrName: 'content',
-          })}
-        </div>
-      </ModuleContainer>
-    ),
+          moduleClassName="d5_tut_simple_quick_module"
+          name={name}
+          scriptDataComponent={ModuleScriptData}
+          stylesComponent={ModuleStyles}
+          classnamesFunction={moduleClassnames}
+        >
+          <ElementComponents
+            attrs={attrs?.module?.decoration}
+            id={id}
+          />
+          <div className="et_pb_module_inner">
+            {elements.render({
+              attrName: 'title',
+            })}
+            {elements.render({
+              attrName: 'content',
+            })}
+            {isLoading ? 'Loading...' : (<div
+              className="d5-tut-simple-quick-module-recent-posts"
+              dangerouslySetInnerHTML={{
+                __html: response?.html,
+              }}
+            />)}
+          </div>
+        </ModuleContainer>
+      )
+    },
   },
 
   // Settings component.
@@ -186,6 +231,21 @@ const simpleQuickModule = {
             label="Content"
           >
             <RichTextContainer />
+          </FieldContainer>
+          {/* New field for modifying number of posts that will be rendered */}
+          <FieldContainer
+            attrName="recentPosts.innerContent"
+            subName="postsNumber"
+            label="Number of Posts"
+          >
+            <RangeContainer
+              min={1}
+              minLimit={1}
+              max={10}
+              maxLimit={10}
+              defaultUnit=""
+              allowedUnits={['']}
+            />
           </FieldContainer>
         </GroupContainer>
         <BackgroundGroup />
