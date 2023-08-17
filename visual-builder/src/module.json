@@ -40,5 +40,6 @@
       "childrenSanitizer": "et_core_esc_previously",
       "allowHtml": true
     }
-  }
+  },
+  "style": ["d5-tutorial-simple-quick-module-style"]
 }
