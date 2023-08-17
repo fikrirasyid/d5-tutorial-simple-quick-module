@@ -43,3 +43,15 @@ function d5_tutorial_simple_quick_module_enqueue_visual_builder_assets() {
 }
 
 add_action( 'et_vb_assets_before_enqueue_packages', 'd5_tutorial_simple_quick_module_enqueue_visual_builder_assets' );
+
+/**
+ * Register Module Assets
+ */
+function d5_tutorial_simple_quick_module_assets() {
+	wp_register_style(
+		'd5-tutorial-simple-quick-module-style',
+		D5_TUTORIAL_SIMPLE_QUICK_MODULE_URL . 'style.css',
+		[]
+	);
+}
+add_action( 'wp_enqueue_scripts', 'd5_tutorial_simple_quick_module_assets' );
