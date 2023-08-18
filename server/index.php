@@ -196,7 +196,7 @@ class D5TutorialSimpleQuickModule implements DependencyInterface {
 
 // Register module.
 add_action(
-	'et_module_library_modules_dependency_tree',
+	'divi_module_library_modules_dependency_tree',
 	function( $dependency_tree ) {
 			$dependency_tree->add_dependency( new D5TutorialSimpleQuickModule() );
 	}

@@ -259,6 +259,6 @@ const simpleQuickModule = {
 };
 
 // Register module.
-addAction('moduleLibrary.registerModuleLibraryStore.after', 'd5Tut.simpleQuickModule', () => {
+addAction('divi.moduleLibrary.registerModuleLibraryStore.after', 'd5Tut.simpleQuickModule', () => {
   registerModule(simpleQuickModule.metadata, simpleQuickModule);
 });
